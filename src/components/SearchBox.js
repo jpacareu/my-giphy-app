@@ -3,7 +3,7 @@ import axios from 'axios'
 const api_key = '0lkxN4MxSTQadZePdtfT0xZnf8IYGpRS';
 
 function GiphyView(props){
-  return props.data.map(el => <img key={el.id} src={el.url}></img>);
+  return props.data.map(el => <img alt={el.title} key={el.id} src={el.images.fixed_height.url}></img>);
 }
 
 export default class SearchBox extends Component {
@@ -26,7 +26,7 @@ export default class SearchBox extends Component {
     e.preventDefault();
     const searchValue = this.state.searchValue.replace(/\w/,'+');
     const self = this;
-    axios.get(`http://api.giphy.com/v1/gifs/search?q=${searchValue}&api_key=${api_key}&limit=5`)
+    axios.get(`http://api.giphy.com/v1/gifs/search?q=${searchValue}&api_key=${api_key}&limit=20`)
     .then(function (response) {
       self.setState({
         giphy: response.data.data
@@ -53,7 +53,9 @@ export default class SearchBox extends Component {
           />
           <button type="submit">Search</button>
         </form>
+      <div className="giphy__block">
         <GiphyView data={this.state.giphy}/>
+      </div>
       </div>
     )
   }
